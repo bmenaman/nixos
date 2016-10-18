@@ -3,8 +3,8 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./vagrant.nix
+      /etc/nixos/hardware-configuration.nix
+      /etc/nixos/vagrant.nix
     ];
 
   # Use the GRUB 2 boot loader.
