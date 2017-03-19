@@ -61,7 +61,6 @@
     stalonetray
     dmenu
     feh
-    xmonad-with-packages
     xclip
     xfontsel
     xlsfonts
@@ -70,65 +69,27 @@
     xlibs.xmessage
     xlibs.xmodmap
 
+    drive
+    go
+    python27
+    python27Packages.virtualenv
+    terminator
+    jdk
+    idea.idea-community
+    vim
+
     firefox
   ];
 
  programs.zsh.enable = true;
+ programs.ssh.startAgent = true;
 
  # XXX: add more fonts!
   fonts = {
-    enableCoreFonts = true;
+    #enableCoreFonts = true;
     enableFontDir = true;
     enableGhostscriptFonts = false;
 
-    # terminus I use for rxvt-unicode
-    # see https://github.com/chaoflow/chaoflow.skel.home/blob/master/.Xdefaults
-    fonts = [
-       #pkgs.cantarell_fonts
-       #pkgs.dejavu_fonts
-       #pkgs.dosemu_fonts
-       #pkgs.freefont_ttf
-       #pkgs.liberation_ttf
-       pkgs.terminus_font
-       #pkgs.ubuntu_font_family
-       #pkgs.ucsFonts
-       #pkgs.unifont
-       #pkgs.vistafonts
-       #pkgs.xlibs.fontadobe100dpi
-       #pkgs.xlibs.fontadobe75dpi
-       #pkgs.xlibs.fontadobeutopia100dpi
-       #pkgs.xlibs.fontadobeutopia75dpi
-       #pkgs.xlibs.fontadobeutopiatype1
-       #pkgs.xlibs.fontarabicmisc
-       pkgs.xlibs.fontbh100dpi
-       pkgs.xlibs.fontbh75dpi
-       pkgs.xlibs.fontbhlucidatypewriter100dpi
-       pkgs.xlibs.fontbhlucidatypewriter75dpi
-       pkgs.xlibs.fontbhttf
-       pkgs.xlibs.fontbhtype1
-       pkgs.xlibs.fontbitstream100dpi
-       pkgs.xlibs.fontbitstream75dpi
-       pkgs.xlibs.fontbitstreamtype1
-       #pkgs.xlibs.fontcronyxcyrillic
-       pkgs.xlibs.fontcursormisc
-       pkgs.xlibs.fontdaewoomisc
-       pkgs.xlibs.fontdecmisc
-       pkgs.xlibs.fontibmtype1
-       pkgs.xlibs.fontisasmisc
-       pkgs.xlibs.fontjismisc
-       pkgs.xlibs.fontmicromisc
-       pkgs.xlibs.fontmisccyrillic
-       pkgs.xlibs.fontmiscethiopic
-       pkgs.xlibs.fontmiscmeltho
-       pkgs.xlibs.fontmiscmisc
-       pkgs.xlibs.fontmuttmisc
-       pkgs.xlibs.fontschumachermisc
-       pkgs.xlibs.fontscreencyrillic
-       pkgs.xlibs.fontsonymisc
-       pkgs.xlibs.fontsunmisc
-       pkgs.xlibs.fontwinitzkicyrillic
-       pkgs.xlibs.fontxfree86type1
-    ];
 };
 
   # Creates a "vagrant" users with password-less sudo access
@@ -185,14 +146,12 @@
     windowManager.default = "xmonad";
     desktopManager.xterm.enable = false;
     desktopManager.default = "none";
-    startOpenSSHAgent = true;
     displayManager = {
       slim = {
       enable = true;
       defaultUser = "roger";
       };
     };
-    wacom.enable = true;
   };
 
 
