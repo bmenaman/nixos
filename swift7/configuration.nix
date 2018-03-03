@@ -4,17 +4,22 @@
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-      /etc/nixos/vagrant.nix
+#      /etc/nixos/vagrant.nix
     ];
 
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.device = "/dev/sda";
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # remove the fsck that runs at startup. It will always fail to run, stopping
   # your boot until you press *. 
-  boot.initrd.checkJournalingFS = false;
+  #boot.initrd.checkJournalingFS = false;
+
+  fileSystems."/home" =
+    { 
+      device = "/dev/disk/by-uuid/5db6098d-e329-40b3-b519-aa8ca82bbd0b";
+      fsType = "ext4";
+    };
+
 
   # Services to enable:
 
@@ -27,8 +32,14 @@
   # Replace nptd by timesyncd
   services.timesyncd.enable = true;
 
-  # Enable guest additions.
-  virtualisation.virtualbox.guest.enable = true;
+  #wpa supplicant etc
+  #networking.wireless.enable = true;
+  networking.networkmanager.enable = true;
+ 
+ # Enable guest additions.
+  #virtualisation.virtualbox.guest.enable = true;
+
+  nixpkgs.config.allowUnfree = true;
 
   # Packages for Vagrant
   environment.systemPackages = with pkgs; [
@@ -53,13 +64,13 @@
     autoconf automake
     cmake gcc gnupg gnupg1 gnumake
     lsof
-    parted
+    parted insync synapse
     bash
     telnet ncftp
     unzip zip gv 
     
     stalonetray
-    dmenu
+    dmenu slock
     feh
     xclip
     xfontsel
@@ -68,8 +79,8 @@
     xlibs.xinput
     xlibs.xmessage
     xlibs.xmodmap
+    xorg.xbacklight
 
-    drive
     go
     python27
     python27Packages.virtualenv
@@ -78,11 +89,15 @@
     idea.idea-community
     vim
 
-    firefox
+    firefoxWrapper
+    chromium
   ];
 
- programs.zsh.enable = true;
- programs.ssh.startAgent = true;
+ #programs.zsh.enable = true;
+  programs = {
+    ssh.startAgent = true;
+    slock.enable = true;
+  };
 
  # XXX: add more fonts!
   fonts = {
@@ -90,7 +105,7 @@
     enableFontDir = true;
     enableGhostscriptFonts = false;
 
-};
+  };
 
   # Creates a "vagrant" users with password-less sudo access
   users = {
@@ -118,9 +133,9 @@
         password        = "roger";
         home            = "/home/roger";
         createHome      = true;
-        useDefaultShell = false;
-        shell           = "/run/current-system/sw/bin/zsh";
-        uid             = 501;
+        useDefaultShell = true;
+        #shell           = "/run/current-system/sw/bin/zsh";
+        uid             = 1000;
       }
     ];
   };
@@ -146,6 +161,12 @@
     windowManager.default = "xmonad";
     desktopManager.xterm.enable = false;
     desktopManager.default = "none";
+    libinput = {
+      enable = true;
+      tapping = true;
+      naturalScrolling = true;
+      middleEmulation = true;
+    };
     displayManager = {
       slim = {
       enable = true;
@@ -160,5 +181,11 @@
 
   time.timeZone = "Europe/London";
     services.nixosManual.showManual = true;
+
+  # This value determines the NixOS release with which your system is to be
+  # compatible, in order to avoid breaking some software such as database
+  # servers. You should change this only after NixOS release notes say you
+  # should.
+  system.stateVersion = "17.09"; # Did you read the comment?
 
 }
