@@ -35,6 +35,8 @@
   #wpa supplicant etc
   #networking.wireless.enable = true;
   networking.networkmanager.enable = true;
+  #for nm-applet
+  services.gnome3.at-spi2-core.enable = true;
  
  # Enable guest additions.
   #virtualisation.virtualbox.guest.enable = true;
@@ -70,6 +72,8 @@
     unzip zip gv 
     
     stalonetray
+    networkmanagerapplet
+    xfce.xfce4_power_manager
     dmenu slock
     feh
     xclip
@@ -80,6 +84,7 @@
     xlibs.xmessage
     xlibs.xmodmap
     xorg.xbacklight
+    haskellPackages.xmobar
 
     go
     python27
@@ -154,23 +159,29 @@
   services.xserver = {
     enable = true;
     layout = "gb";
+
     windowManager.xmonad = {
         enable = true;
         enableContribAndExtras = true;
     };
     windowManager.default = "xmonad";
-    desktopManager.xterm.enable = false;
-    desktopManager.default = "none";
+
+    desktopManager = {
+      xterm.enable = false;
+      default = "none";
+    };
+
     libinput = {
       enable = true;
       tapping = true;
       naturalScrolling = true;
       middleEmulation = true;
     };
+
     displayManager = {
       slim = {
-      enable = true;
-      defaultUser = "roger";
+        enable = true;
+        defaultUser = "roger";
       };
     };
   };
