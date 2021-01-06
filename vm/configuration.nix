@@ -33,6 +33,12 @@
   boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
   boot.initrd.checkJournalingFS = false;
 
+
+
+  #wpa supplicant etc
+  networking.networkmanager.enable = true;
+  #for nm-applet
+  services.gnome3.at-spi2-core.enable = true;
   # networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -75,12 +81,6 @@
   services.timesyncd.enable = true;
   time.timeZone = "Europe/London";
 
-  #wpa supplicant etc
-  #networking.wireless.enable = true;
-  networking.networkmanager.enable = true;
-  #for nm-applet
-  services.gnome3.at-spi2-core.enable = true;
-
   # Enable sound.
   # sound.enable = true;
   # hardware.pulseaudio.enable = true;
@@ -108,9 +108,8 @@
     
     #CLI tools
     stow 
-    unzip zip gv 
-    rsync  wget
-    fzf xclip silver-searcher
+    unzip zip gv rsync wget
+    fzf xclip silver-searcher fd
     manpages man
     gitAndTools.gitFull
     vim 
