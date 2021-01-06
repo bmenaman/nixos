@@ -8,37 +8,17 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./virtualbox.nix
+      ./gnome.nix
     ];
 
-  security.rngd.enable = false;
-  
-  fileSystems."/win-repos" = {
-    fsType = "vboxsf";
-    device = "repos-share";
-    options = [ "rw" "nofail" ];
-  };
-
-  nixpkgs.config.allowUnfree = true;
-
-  virtualisation.virtualbox.guest.enable = true;
-
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  # boot.loader.grub.efiSupport = true;
-  # boot.loader.grub.efiInstallAsRemovable = true;
-  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  # Define on which hard drive you want to install Grub.
-#VMONLY
-  boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
-  boot.initrd.checkJournalingFS = false;
 
 
 
   #wpa supplicant etc
-  networking.networkmanager.enable = true;
+  #networking.networkmanager.enable = true;
   #for nm-applet
-  services.gnome3.at-spi2-core.enable = true;
+ # services.gnome3.at-spi2-core.enable = true;
   # networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -114,6 +94,21 @@
     gitAndTools.gitFull
     vim 
 
+    #xmonad and desktop
+    
+    stalonetray
+    #networkmanagerapplet
+    #xfce.xfce4_power_manager
+    dmenu slock
+    feh
+    #xclip
+    #xlibs.xev
+    #xlibs.xinput
+    #xlibs.xmessage
+    xlibs.xmodmap
+    xorg.xbacklight
+    haskellPackages.xmobar
+
     #UI
     terminator
     insync
@@ -138,9 +133,6 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome3.enable = true;
 
 
   users.users.roger = {

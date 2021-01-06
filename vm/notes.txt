@@ -5,3 +5,5 @@ TODO
 fonts
 networking
 xmonad
+solarized
+terminator .config/terminator
