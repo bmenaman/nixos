@@ -98,7 +98,7 @@
     
     stalonetray
     #networkmanagerapplet
-    #xfce.xfce4_power_manager
+    xfce.xfce4_power_manager
     dmenu slock
     feh
     #xclip
