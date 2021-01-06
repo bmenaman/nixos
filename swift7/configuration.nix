@@ -14,11 +14,6 @@
   # your boot until you press *. 
   #boot.initrd.checkJournalingFS = false;
 
-  fileSystems."/home" =
-    { 
-      device = "/dev/disk/by-uuid/5db6098d-e329-40b3-b519-aa8ca82bbd0b";
-      fsType = "ext4";
-    };
 
 
   # Services to enable:
@@ -86,14 +81,11 @@
     xorg.xbacklight
     haskellPackages.xmobar
 
-    go
     python27
     python27Packages.virtualenv
     terminator
-    jdk
-    idea.idea-community
     vim
-
+    citrix_workspace
     firefoxWrapper
     chromium
   ];
