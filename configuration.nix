@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./virtualbox.nix
+      #./virtualbox.nix
       #./gnome.nix
       ./xmonad.nix
     ];
@@ -93,7 +93,7 @@
     fzf xclip silver-searcher fd
     manpages man
     gitAndTools.gitFull
-    vim 
+    vim dos2unix
 
     #xmonad and desktop
     
