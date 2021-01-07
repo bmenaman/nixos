@@ -8,8 +8,9 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./virtualbox.nix
+      #./virtualbox.nix
       #./gnome.nix
+      #./swift7.nix
       ./xmonad.nix
     ];
 
