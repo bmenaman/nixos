@@ -9,7 +9,8 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./virtualbox.nix
-      ./gnome.nix
+      #./gnome.nix
+      ./xmonad.nix
     ];
 
 
