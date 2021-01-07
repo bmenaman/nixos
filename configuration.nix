@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      #./virtualbox.nix
+      ./virtualbox.nix
       #./gnome.nix
       ./xmonad.nix
     ];
@@ -45,15 +45,12 @@
 
   
 
-  # Configure keymap in X11
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
     # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  #services.openssh.enable = true;
 
   # Enable DBus
   services.dbus.enable    = true;
@@ -68,12 +65,6 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.jane = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  # };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -121,10 +112,10 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
 
   # List services that you want to enable:
 
@@ -142,6 +133,17 @@
     extraGroups = [ "networkmanager" "wheel" "users" ];
     shell = pkgs.zsh;
   };
+
+  security.sudo.configFile =
+    ''
+      Defaults:root,%wheel env_keep+=LOCALE_ARCHIVE
+      Defaults:root,%wheel env_keep+=NIX_PATH
+      Defaults:root,%wheel env_keep+=TERMINFO_DIRS
+      Defaults env_keep+=SSH_AUTH_SOCK
+      Defaults lecture = never
+      root   ALL=(ALL) SETENV: ALL
+      %wheel ALL=(ALL) NOPASSWD: ALL, SETENV: ALL
+    '';
 
 
   # This value determines the NixOS release from which the default
