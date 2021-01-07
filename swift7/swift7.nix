@@ -66,6 +66,4 @@
 
   # List swap partitions that are mounted at boot time.
   #swapDevices = [{ label = "swap"; }];
-
-  services.nixosManual.showManual = true;
 }
