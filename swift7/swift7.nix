@@ -30,7 +30,6 @@
   ];
 
   programs = {
-    ssh.startAgent = true;
     slock.enable = true;
   };
 
