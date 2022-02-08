@@ -8,19 +8,16 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      #./virtualbox.nix
-      #./gnome.nix
-      #./swift7.nix
-      ./xmonad.nix
+      ./xserver.nix
     ];
 
+  nixpkgs.config.allowUnfree = true;
 
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.blacklistedKernelModules = ["nouveau"];
 
-
-  #wpa supplicant etc
-  #networking.networkmanager.enable = true;
-  #for nm-applet
- # services.gnome3.at-spi2-core.enable = true;
   # networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -31,7 +28,7 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp0s3.useDHCP = true;
+  networking.interfaces.eth0.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -44,21 +41,18 @@
   #   keyMap = "us";
   # };
 
+  # Enable the X11 windowing system.
+  # services.xserver.enable = true;
+
+
   
 
+  # Configure keymap in X11
+  # services.xserver.layout = "us";
+  # services.xserver.xkbOptions = "eurosign:e";
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
-
-    # Enable the OpenSSH daemon.
-  #services.openssh.enable = true;
-
-  # Enable DBus
-  services.dbus.enable    = true;
-
-  # Replace nptd by timesyncd
-  services.timesyncd.enable = true;
-  time.timeZone = "Europe/London";
 
   # Enable sound.
   # sound.enable = true;
@@ -67,48 +61,72 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.roger = {
+    isNormalUser = true;
+    uid = 1000;
+    shell = pkgs.zsh;
+    extraGroups = [ "wheel" "networkmanager" "users" ]; # Enable ‘sudo’ for the user.
+  };
+
+
+  fileSystems."mnt/batcomp/virtual_machines" = {
+    device = "//192.168.11.83/virtual_machines";
+    fsType = "cifs";
+    options = let
+      # this line prevents hanging on network split
+      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+
+    in ["${automount_opts},credentials=/etc/nixos/smb-secrets"];
+  };
+
+  fonts.fonts = with pkgs; [
+    jetbrains-mono
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-   environment.systemPackages = with pkgs; [
+    environment.systemPackages = with pkgs; [
 
-    #libs
-    findutils
-    iputils nettools telnet ncftp netcat
-    nfs-utils
-    rxvt_unicode
-    zlib
-    xfontsel xlsfonts
-    
-    #CLI tools
-    stow 
-    unzip zip gv rsync wget
-    fzf xclip silver-searcher fd
-    manpages man
-    gitAndTools.gitFull
-    vim dos2unix
+     #libs
+     findutils
+     iputils nettools telnet ncftp netcat
+     nfs-utils
+     rxvt_unicode
+     zlib
+     xfontsel xlsfonts
 
-    #xmonad and desktop
-    
-    stalonetray
-    #networkmanagerapplet
-    xfce.xfce4_power_manager
-    dmenu slock
-    feh
-    #xclip
-    #xlibs.xev
-    #xlibs.xinput
-    #xlibs.xmessage
-    xlibs.xmodmap
-    xorg.xbacklight
-    haskellPackages.xmobar
+     #CLI tools
+     stow
+     unzip zip gv rsync wget
+     fzf xclip silver-searcher fd oh-my-zsh thefuck
+     manpages man
+     gitAndTools.gitFull
+     vim
+     dos2unix
+     direnv
 
-    #UI
-    terminator
-    insync
-    vscodium  
-    firefox
-    parted
-   ];
+     #xmonad and desktop
+     stalonetray
+     #networkmanagerapplet
+     xfce.xfce4_power_manager
+     dmenu slock
+     feh
+     #xclip
+     #xlibs.xev
+     #xlibs.xinput
+     #xlibs.xmessage
+     xlibs.xmodmap
+     xorg.xbacklight
+     haskellPackages.xmobar
+
+     #UI
+     terminator
+     #insync
+     vscode
+     firefox
+     parted
+    ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -120,6 +138,8 @@
 
   # List services that you want to enable:
 
+  # Enable the OpenSSH daemon.
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -127,24 +147,13 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  security.sudo.configFile =
-    ''
-      Defaults:root,%wheel env_keep+=LOCALE_ARCHIVE
-      Defaults:root,%wheel env_keep+=NIX_PATH
-      Defaults:root,%wheel env_keep+=TERMINFO_DIRS
-      Defaults env_keep+=SSH_AUTH_SOCK
-      Defaults lecture = never
-      root   ALL=(ALL) SETENV: ALL
-      %wheel ALL=(ALL) NOPASSWD: ALL, SETENV: ALL
-    '';
-
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.09"; # Did you read the comment?
+  system.stateVersion = "21.11"; # Did you read the comment?
+
 }
 
